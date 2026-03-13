@@ -12,7 +12,8 @@
     --dark-color: rgb(2, 4, 8);
     --dark-hover: rgba(255, 255, 255, 0.1);
 
-    --light-color: rgb(245, 245, 245);
+    /* --light-color: rgb(245, 245, 245); */
+    --light-color: rgb(255, 255, 255);
     --light-hover: rgba(0, 0, 0, 0.1);
 }
 
@@ -26,8 +27,8 @@ body {
     align-items: center;
     font-family: monospace, sans-serif;
     font-size: 0.5rem;
-    /* transition: background-color 0.3s; */
-    transition: background-color white;
+    transition: background-color 0.3s;
+    /* transition: background-color white; */
 }
 
 body.light-mode {
