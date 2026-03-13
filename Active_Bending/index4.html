@@ -1,0 +1,57 @@
+<script>
+
+const username = "a3yk"
+const repo = "Flipbook"
+const folder = "Active_Bending/assets/images/pages"
+
+const apiURL =
+`https://api.github.com/repos/${username}/${repo}/contents/${folder}`
+
+fetch(apiURL)
+.then(res => res.json())
+.then(data => {
+
+const images = data
+.filter(file => file.name.match(/\.(jpg|jpeg|png|webp)$/i))
+.sort((a,b)=>{
+const numA = parseInt(a.name.match(/\d+/)[0])
+const numB = parseInt(b.name.match(/\d+/)[0])
+return numA - numB
+})
+
+const container = document.getElementById("pages_container")
+
+let pageIndex = 0
+
+for(let i=0;i<images.length;i+=2){
+
+const front = images[i]
+const back = images[i+1]
+
+const page = document.createElement("div")
+page.className = "page"
+page.style.zIndex = images.length - pageIndex
+
+page.innerHTML = `
+<div class="front_page">
+<img class="front_content" src="${front.download_url}">
+</div>
+
+<div class="back_page">
+<img class="back_content" src="${back ? back.download_url : ""}">
+</div>
+`
+
+page.addEventListener("click",()=>{
+page.classList.toggle("flipped")
+})
+
+container.appendChild(page)
+
+pageIndex++
+
+}
+
+})
+
+</script>
