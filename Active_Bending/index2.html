@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flip Book</title>
+
+<link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+
+<main>
+
+<input type="checkbox" id="cover_checkbox">
+
+<div id="flip_book">
+
+<div class="front_cover">
+<label for="cover_checkbox" id="cover"></label>
+</div>
+
+<!-- Pages will be generated here -->
+<div id="pages_container"></div>
+
+<div class="back_cover"></div>
+
+</div>
+
+</main>
+
+
+<script>
+
+const username = "YOUR_GITHUB_USERNAME"
+const repo = "YOUR_REPOSITORY"
+const folder = "assets/images/pages"
+
+const apiURL =
+`https://api.github.com/repos/${username}/${repo}/contents/${folder}`
+
+fetch(apiURL)
+.then(res => res.json())
+.then(data => {
+
+const images = data
+.filter(file => file.name.match(/\.(jpg|jpeg|png|webp)$/i))
+.sort((a,b)=>a.name.localeCompare(b.name))
+
+const container = document.getElementById("pages_container")
+
+let pageNumber = 1
+let checkboxHTML = ""
+
+for(let i=0;i<images.length;i+=2){
+
+const front = images[i]
+const back = images[i+1]
+
+const checkboxID = `page${pageNumber}_checkbox`
+
+checkboxHTML += `<input type="checkbox" id="${checkboxID}">`
+
+container.innerHTML += `
+<div class="page" id="page${pageNumber}">
+
+<div class="front_page">
+<label for="${checkboxID}"></label>
+<img class="edge_shading" src="./assets/images/front_page_edge_shading.webp">
+<img class="front_content" src="${front.download_url}">
+</div>
+
+<div class="back_page">
+<label for="${checkboxID}"></label>
+<img class="edge_shading" src="./assets/images/back_page_edge_shading.webp">
+<img class="back_content" src="${back ? back.download_url : ""}">
+</div>
+
+</div>
+`
+
+pageNumber++
+
+}
+
+document.querySelector("main")
+insertAdjacentHTML("afterbegin", checkboxHTML)
+
+})
+
+</script>
+
+</body>
+
+</html>

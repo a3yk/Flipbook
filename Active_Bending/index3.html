@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Flipbook PDF</title>
+
+<link rel="stylesheet" href="./style.css">
+
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+</head>
+
+<body>
+
+<main>
+
+<div id="flip_book">
+
+<div class="front_cover" id="cover"></div>
+
+<div id="pages_container"></div>
+
+<div class="back_cover" id="back_cover"></div>
+
+</div>
+
+</main>
+
+<script>
+
+const url = "./book.pdf"   // your PDF file
+
+pdfjsLib.getDocument(url).promise.then(pdf => {
+
+const container = document.getElementById("pages_container")
+
+const totalPages = pdf.numPages
+
+for(let i=2;i<totalPages;i+=2){
+
+const pageDiv = document.createElement("div")
+pageDiv.className = "page"
+
+const frontCanvas = document.createElement("canvas")
+const backCanvas = document.createElement("canvas")
+
+pageDiv.appendChild(frontCanvas)
+pageDiv.appendChild(backCanvas)
+
+container.appendChild(pageDiv)
+
+renderPage(pdf,i,frontCanvas)
+
+if(i+1<=totalPages){
+renderPage(pdf,i+1,backCanvas)
+}
+
+}
+
+renderPage(pdf,1,document.getElementById("cover"))
+
+renderPage(pdf,totalPages,document.getElementById("back_cover"))
+
+})
+
+function renderPage(pdf,pageNumber,canvas){
+
+pdf.getPage(pageNumber).then(page => {
+
+const viewport = page.getViewport({scale:1.5})
+
+const context = canvas.getContext("2d")
+
+canvas.height = viewport.height
+canvas.width = viewport.width
+
+page.render({
+canvasContext:context,
+viewport:viewport
+})
+
+})
+
+}
+
+</script>
+
+</body>
+
+</html>
