@@ -31,7 +31,7 @@ body {
 
 body.light-mode {
     color: var(--dark-color);
-    background-color: var(--light-color)
+    background-color: var(--light-color);
 }
 
 body.light-mode #toggle-mode-btn:hover {
@@ -47,13 +47,39 @@ body.dark-mode #toggle-mode-btn:hover {
     background-color: var(--dark-hover);
 }
 
-a {
-    text-decoration: none;
-    color: var(--dark-color);
-}
-
 input {
     display: none;
+}
+
+/* LOADING */
+#loading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+#loading.hidden {
+    display: none;
+}
+
+.loading-spinner {
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid rgba(128, 128, 128, 0.3);
+    border-top-color: crimson;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 /* MAIN */
@@ -75,20 +101,6 @@ input {
     cursor: pointer;
 }
 
-#portfolio-link {
-    padding-right: 0.5rem;
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    font-size: 0.75rem;
-}
-
-#github-link {
-    position: fixed;
-    bottom: 1rem;
-    left: 1rem;
-}
-
 /* RESPONSIVE WARNING */
 #responsive-warning {
     width: 100%;
@@ -107,8 +119,8 @@ input {
     z-index: 9999;
 }
 
-.warning-icons {
-    font-size: 10rem;
+.warning-icon {
+    font-size: 5rem;
 }
 
 @media (max-width: 768px) {
@@ -235,63 +247,9 @@ input {
     z-index: -1;
 }
 
-#page1 {
-    z-index: 8;
-}
-
-#page2 {
-    z-index: 5;
-}
-
-#page3 {
-    z-index: 4;
-}
-
-#page4 {
-    z-index: 3;
-}
-
-#page5 {
-    z-index: 2;
-}
-
-#cover_checkbox:checked~#flip_book {
-    transform: translateX(144px)
-}
-
-#cover_checkbox:checked~#flip_book .front_cover {
-    transform: rotateY(-180deg);
-    transition: transform 1.5s, z-index 0.5s 0.5s;
-    z-index: 1;
-}
-
-#cover_checkbox:checked~#flip_book #cover {
-    width: 80%;
-    height: 80%;
-    position: absolute;
-}
-
-#page1_checkbox:checked~#flip_book #page1 {
-    transform: rotateY(-180deg);
-    z-index: 3;
-}
-
-#page2_checkbox:checked~#flip_book #page2 {
-    transform: rotateY(-180deg);
-    z-index: 4;
-}
-
-#page3_checkbox:checked~#flip_book #page3 {
-    transform: rotateY(-180deg);
-    z-index: 5;
-}
-
-#page4_checkbox:checked~#flip_book #page4 {
-    transform: rotateY(-180deg);
-    z-index: 6;
-}
-
-#page5_checkbox:checked~#flip_book #page5 {
-    transform: rotateY(-180deg);
-    z-index: 9;
-}
+/*
+    NOTE: Per-page z-index rules and checkbox-checked rules
+    (e.g. #page1 { z-index: … } and #page1_checkbox:checked ~ …)
+    are generated dynamically by script.js so that they scale
+    automatically with the number of images in the repository.
+*/
