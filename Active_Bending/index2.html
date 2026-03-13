@@ -47,7 +47,12 @@ fetch(apiURL)
 
 const images = data
 .filter(file => file.name.match(/\.(jpg|jpeg|png|webp)$/i))
-.sort((a,b)=>a.name.localeCompare(b.name))
+// .sort((a,b)=>a.name.localeCompare(b.name))
+.sort((a,b)=>{
+const numA = parseInt(a.name.match(/\d+/)[0])
+const numB = parseInt(b.name.match(/\d+/)[0])
+return numA - numB
+})
 
 const container = document.getElementById("pages_container")
 
