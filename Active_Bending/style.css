@@ -36,9 +36,9 @@ body.light-mode {
     background-color: var(--light-color)
 }
 
-body.light-mode #toggle-mode-btn:hover {
+/* body.light-mode #toggle-mode-btn:hover {
     background-color: var(--light-hover);
-}
+} */
 
 body.dark-mode {
     color: var(--light-color);
