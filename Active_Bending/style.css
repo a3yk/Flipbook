@@ -26,7 +26,8 @@ body {
     align-items: center;
     font-family: monospace, sans-serif;
     font-size: 0.5rem;
-    transition: background-color 0.3s;
+    /* transition: background-color 0.3s; */
+    transition: background-color white;
 }
 
 body.light-mode {
