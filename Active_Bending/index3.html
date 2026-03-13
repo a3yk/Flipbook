@@ -6,18 +6,83 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Flipbook PDF</title>
+<title>Flipbook</title>
 
 <link rel="stylesheet" href="./style.css">
 
-<!-- PDF.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+
+body{
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:#eee;
+}
+
+#flip_book{
+position:relative;
+width:900px;
+height:600px;
+perspective:1500px;
+}
+
+.page{
+position:absolute;
+width:50%;
+height:100%;
+top:0;
+right:0;
+transform-origin:left;
+transition:transform 0.8s;
+transform-style:preserve-3d;
+}
+
+.page img{
+width:100%;
+height:100%;
+object-fit:contain;
+background:white;
+}
+
+.front_page,
+.back_page{
+position:absolute;
+width:100%;
+height:100%;
+backface-visibility:hidden;
+}
+
+.back_page{
+transform:rotateY(180deg);
+}
+
+.page.flipped{
+transform:rotateY(-180deg);
+}
+
+.front_cover,
+.back_cover{
+position:absolute;
+width:50%;
+height:100%;
+background:white;
+}
+
+.front_cover{
+left:0;
+}
+
+.back_cover{
+right:0;
+}
+
+</style>
 
 </head>
 
 <body>
-
-<main>
 
 <div id="flip_book">
 
@@ -25,68 +90,67 @@
 
 <div id="pages_container"></div>
 
-<div class="back_cover" id="back_cover"></div>
+<div class="back_cover" id="back"></div>
 
 </div>
 
-</main>
 
 <script>
 
-const url = "./book.pdf"   // your PDF file
+const username = "a3yk"
+const repo = "portfolio"
+const folder = "assets/images/pages"
 
-pdfjsLib.getDocument(url).promise.then(pdf => {
+const api =
+`https://api.github.com/repos/${username}/${repo}/contents/${folder}`
 
+fetch(api)
+.then(r=>r.json())
+.then(data=>{
+
+const images = data
+.filter(f=>f.name.match(/\.(jpg|jpeg|png|webp)$/i))
+.sort((a,b)=>a.name.localeCompare(b.name))
+
+const cover = document.getElementById("cover")
+const back = document.getElementById("back")
 const container = document.getElementById("pages_container")
 
-const totalPages = pdf.numPages
+cover.innerHTML = `<img src="${images[0].download_url}">`
+back.innerHTML = `<img src="${images[images.length-1].download_url}">`
 
-for(let i=2;i<totalPages;i+=2){
+let pageIndex = 1
 
-const pageDiv = document.createElement("div")
-pageDiv.className = "page"
+for(let i=1;i<images.length-1;i+=2){
 
-const frontCanvas = document.createElement("canvas")
-const backCanvas = document.createElement("canvas")
+const front = images[i]
+const backImg = images[i+1]
 
-pageDiv.appendChild(frontCanvas)
-pageDiv.appendChild(backCanvas)
+const page = document.createElement("div")
+page.className = "page"
+page.style.zIndex = images.length-pageIndex
 
-container.appendChild(pageDiv)
+page.innerHTML = `
+<div class="front_page">
+<img src="${front.download_url}">
+</div>
 
-renderPage(pdf,i,frontCanvas)
+<div class="back_page">
+<img src="${backImg ? backImg.download_url : ""}">
+</div>
+`
 
-if(i+1<=totalPages){
-renderPage(pdf,i+1,backCanvas)
+page.onclick = ()=>{
+page.classList.toggle("flipped")
 }
 
-}
+container.appendChild(page)
 
-renderPage(pdf,1,document.getElementById("cover"))
-
-renderPage(pdf,totalPages,document.getElementById("back_cover"))
-
-})
-
-function renderPage(pdf,pageNumber,canvas){
-
-pdf.getPage(pageNumber).then(page => {
-
-const viewport = page.getViewport({scale:1.5})
-
-const context = canvas.getContext("2d")
-
-canvas.height = viewport.height
-canvas.width = viewport.width
-
-page.render({
-canvasContext:context,
-viewport:viewport
-})
-
-})
+pageIndex++
 
 }
+
+})
 
 </script>
 
