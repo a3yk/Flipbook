@@ -4,7 +4,7 @@
 const GITHUB_USER   = 'a3yk';
 const GITHUB_REPO   = 'Flipbook';
 const GITHUB_BRANCH = 'main';          // change to 'master' if needed
-const GITHUB_FOLDER = 'Active_Bending';
+const GITHUB_FOLDER = 'Active_Bending/assets/images/pages';
 
 const RAW_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${GITHUB_FOLDER}`;
 const API_URL  = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GITHUB_FOLDER}`;
