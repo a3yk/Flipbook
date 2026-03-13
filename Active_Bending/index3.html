@@ -46,6 +46,14 @@ object-fit:contain;
 background:white;
 }
 
+.page img{
+width:100%;
+height:100%;
+object-fit:contain;
+display:block;
+background:white;
+}
+
 .front_page,
 .back_page{
 position:absolute;
@@ -110,7 +118,11 @@ fetch(api)
 
 const images = data
 .filter(f=>f.name.match(/\.(jpg|jpeg|png|webp)$/i))
-.sort((a,b)=>a.name.localeCompare(b.name))
+.sort((a,b)=>{
+const numA = parseInt(a.name.match(/\d+/)[0])
+const numB = parseInt(b.name.match(/\d+/)[0])
+return numA - numB
+})
 
 const cover = document.getElementById("cover")
 const back = document.getElementById("back")
