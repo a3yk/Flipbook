@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip Book</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./style2.css">
+
+    <!-- Script -->
+    <script src="./script2.js" defer></script>
+</head>
+
+<body>
+    <main>
+        <!-- Cover checkbox (always present) -->
+        <input type="checkbox" id="cover_checkbox">
+
+        <!--
+            Page checkboxes and page divs are injected here
+            dynamically by script2.js based on the GitHub repo contents.
+        -->
+
+        <!-- Flip Book shell -->
+        <div id="flip_book">
+            <div class="front_cover">
+                <label for="cover_checkbox" id="cover"></label>
+            </div>
+
+            <!-- Pages injected here by script2.js -->
+
+            <div class="back_cover"></div>
+        </div>
+
+        <!-- Loading / error state -->
+        <div id="loading">
+            <span class="loading-spinner"></span>
+            Loading pages…
+        </div>
+
+        <!-- Toggle mode button -->
+        <button id="toggle-mode-btn" aria-label="Toggle colour mode">🌙</button>
+
+        <!-- Swipe hint (shown briefly on mobile) -->
+        <div id="swipe-hint">Swipe to turn pages</div>
+    </main>
+</body>
+
+</html>
